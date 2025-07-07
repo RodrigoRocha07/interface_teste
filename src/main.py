@@ -8,7 +8,11 @@ from pathlib import Path
 from fastapi.staticfiles import StaticFiles
 from src.utils.dados_login import retornar_dados_login
 from src.utils.dados_wallet import retornar_dados_wallet
+
 from src.utils.deposit import retorna_dados_transaction_deposit
+from src.utils.saque import retorna_dados_transaction_saque
+
+
 from fastapi.responses import JSONResponse
 from datetime import datetime
 from typing import List, Dict
@@ -48,14 +52,11 @@ def gerar_dados_acao(action, numero_requisicao, data):
     
 
     elif action == "saque":
-        return {
-            **dados_base,
-            "action": "withdrawal",
-            "user_id": f"user_{numero_requisicao}",
-            "amount": 50.0,
-            "currency": "BRL",
-            "bank_account": "12345-6"
-        }
+        response = retorna_dados_transaction_saque(data.get("cpf"), data.get("saque"))
+        if data.get('valor_aleatorio'):
+            response['meta']['value'] = random.randint(1000, 99999)
+
+        return response
     
     elif action == "startgame":
         return {

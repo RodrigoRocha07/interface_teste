@@ -6,6 +6,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 load_dotenv()  # Carrega o .env
 
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "chave-padrao-segura")
+JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
+JWT_EXPIRATION_MINUTES = int(os.getenv("JWT_EXPIRATION_MINUTES", "30"))
 
 
 class Settings(BaseSettings):

@@ -636,12 +636,12 @@
 
                     <div class="form-group">
                         <label>Valor do depósito:</label>
-                        <input type="number" name="deposit" id="deposit-input">
+                        <input type="number" id="deposit-input" name="deposit">
                     </div>
 
                     <div class="form-group checkbox-group">
                         <label>
-                            <input type="checkbox" name="valor_aleatorio" id="valor-aleatorio" {% if valor_aleatorio %}checked{% endif %}>
+                            <input type="checkbox" id="valor-aleatorio-deposito" name="valor_aleatorio"  {% if valor_aleatorio %}checked{% endif %}>
                             Valor Aleatório
                         </label>
                     </div>
@@ -651,23 +651,21 @@
             </div>
 
             <script>
-                const checkbox = document.getElementById("valor-aleatorio");
+                const checkboxDeposito = document.getElementById("valor-aleatorio-deposito");
                 const depositInput = document.getElementById("deposit-input");
 
                 function toggleDepositInput() {
-                    if (checkbox.checked) {
-                        depositInput.value = "";         // Zera o campo
-                        depositInput.disabled = true;    // Desabilita o campo
+                    if (checkboxDeposito.checked) {
+                        depositInput.value = "";
+                        depositInput.disabled = true;
                     } else {
-                        depositInput.disabled = false;   // Habilita o campo
+                        depositInput.disabled = false;
                     }
                 }
 
-                // Aplica a lógica ao carregar a página
                 toggleDepositInput();
+                checkboxDeposito.addEventListener("change", toggleDepositInput);
 
-                // Aplica a lógica ao clicar na checkbox
-                checkbox.addEventListener("change", toggleDepositInput);
             </script>
 
             <!-- SAQUE TAB -->
@@ -686,9 +684,42 @@
                         <label>Delay entre requisições (ms):</label>
                         <input type="number" name="delay" min="0" max="5000" value="100">
                     </div>
+                    <div class="form-group">
+                        <label>CPF Usuario:</label>
+                        <input type="text" name="cpf">
+                    </div>
+                    <div class="form-group">
+                        <label>Valor do depósito:</label>
+                        <input type="number" id="saque-input" name="saque">
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="valor-aleatorio-saque" name="valor_aleatorio" {% if valor_aleatorio %}checked{% endif %}>
+                            Valor Aleatório
+                        </label>
+                    </div>
                     <button type="submit">🚀 Iniciar Teste de Saque</button>
                 </form>
             </div>
+            <script>
+                const checkboxSaque = document.getElementById("valor-aleatorio-saque");
+                const saqueInput = document.getElementById("saque-input");
+
+                function toggleSaqueInput() {
+                    if (checkboxSaque.checked) {
+                        saqueInput.value = "";
+                        saqueInput.disabled = true;
+                    } else {
+                        saqueInput.disabled = false;
+                    }
+                }
+
+                toggleSaqueInput();
+                checkboxSaque.addEventListener("change", toggleSaqueInput);
+
+            </script>
+
 
             <!-- START GAME TAB -->
             <div id="startgame" class="tab-content">
