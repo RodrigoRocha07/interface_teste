@@ -4,145 +4,755 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Testar API de Segurança</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+    <style>
+        /* Fonte mais moderna e suave */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+              Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            margin: 0;
+            padding: 10px;
+            background: #f0f2f5;
+            color: #333;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Layout principal com flexbox - formulário à esquerda, alertas à direita */
+        .main-layout {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* Container do formulário - lado esquerdo */
+        .container {
+            flex: 2;
+            min-width: 0;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            transition: box-shadow 0.3s ease;
+            order: 1;
+        }
+
+        .container:hover {
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Sidebar de Alerts - lado direito */
+        .alerts-sidebar {
+            flex: 1;
+            background: #f9fafb;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+            padding: 16px;
+            min-width: 280px;
+            max-width: 380px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: sticky;
+            top: 20px;
+            order: 2;
+        }
+
+        .alerts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .alerts-header h2 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #dc2626;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .refresh-btn {
+            background: #4277f1;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            width: 50%;
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+            white-space: nowrap;
+        }
+
+        .refresh-btn:hover {
+            background: #27b4e8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(5, 150, 105, 0.4);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .alerts-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .alert-item {
+            background: #fff;
+            border-left: 4px solid #dc2626;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            padding: 10px 12px;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .alert-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.12);
+        }
+
+        .alert-item strong {
+            color: #b91c1c;
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 4px;
+            word-break: break-word;
+        }
+
+        .alert-customer-id, .alert-customer-name, .alert-name {
+            color: #374151;
+            font-size: 0.8rem;
+            margin: 4px 0;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        .alert-date {
+            color: #6b7280;
+            font-size: 0.75rem;
+            text-align: right;
+            font-weight: 500;
+            margin-top: 6px;
+        }
+
+        .alert-item.empty {
+            border: none;
+            background: none;
+            color: #6b7280;
+            text-align: center;
+            box-shadow: none;
+            font-style: italic;
+        }
+
+        /* Responsividade para tablets */
+        @media (max-width: 1024px) {
+            .main-layout {
+                gap: 16px;
+            }
+            
+            .container {
+                padding: 16px;
+            }
+            
+            .alerts-sidebar {
+                min-width: 250px;
+                padding: 12px;
+            }
+        }
+
+        /* Responsividade para telas menores */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .main-layout {
+                flex-direction: column;
+                gap: 16px;
+                padding: 0 5px;
+            }
+            
+            .container {
+                order: 1;
+                padding: 16px;
+            }
+            
+            .alerts-sidebar {
+                order: 2;
+                max-width: none;
+                min-width: 0;
+                max-height: 300px;
+                position: static;
+                width: 100%;
+            }
+            
+            .alerts-header h2 {
+                font-size: 1rem;
+            }
+            
+            .refresh-btn {
+                font-size: 10px;
+                padding: 5px 8px;
+            }
+        }
+
+        /* Responsividade para celulares */
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px;
+            }
+            
+            .alerts-sidebar {
+                padding: 10px;
+                max-height: 250px;
+            }
+            
+            .alert-item {
+                padding: 8px 10px;
+                margin-bottom: 10px;
+            }
+            
+            .alert-item strong {
+                font-size: 0.85rem;
+            }
+            
+            .alert-customer-id, .alert-customer-name, .alert-name {
+                font-size: 0.75rem;
+            }
+            
+            .alert-date {
+                font-size: 0.7rem;
+            }
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e0e6ed;
+            margin-bottom: 20px;
+            gap: 4px;
+            flex-wrap: wrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab {
+            padding: 10px 16px;
+            cursor: pointer;
+            background: #f7f9fc;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            box-shadow: inset 0 -2px 0 transparent;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .tab:hover {
+            background: #e2e8f0;
+            color: #2563eb;
+        }
+
+        .tab.active {
+            background: #2563eb;
+            color: #fff;
+            box-shadow: inset 0 -4px 0 #1d4ed8;
+        }
+
+        /* Responsividade para tabs em celular */
+        @media (max-width: 480px) {
+            .tabs {
+                gap: 2px;
+                margin-bottom: 16px;
+            }
+            
+            .tab {
+                padding: 8px 12px;
+                font-size: 11px;
+            }
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.35s ease forwards;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 13px;
+        }
+
+        input, select {
+            padding: 10px 14px;
+            width: 100%;
+            max-width: 400px;
+            border: 1.8px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #111827;
+            background: #f9fafb;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: #fff;
+            box-shadow: 0 0 8px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Responsividade para inputs em celular */
+        @media (max-width: 480px) {
+            input, select {
+                padding: 8px 12px;
+                font-size: 13px;
+                max-width: 100%;
+            }
+            
+            label {
+                font-size: 12px;
+            }
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+            width: 100%;
+            max-width: 300px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+            box-shadow: 0 8px 20px rgba(29, 78, 216, 0.5);
+        }
+
+        /* Responsividade para botões em celular */
+        @media (max-width: 480px) {
+            button {
+                padding: 10px 20px;
+                font-size: 13px;
+                max-width: 100%;
+            }
+        }
+
+        .url-info {
+            background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+            color: white;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin: 16px 0;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.5);
+            word-break: break-all;
+        }
+
+        /* Responsividade para url-info em celular */
+        @media (max-width: 480px) {
+            .url-info {
+                padding: 12px 14px;
+                font-size: 12px;
+                margin: 12px 0;
+            }
+        }
+
+        .action-description {
+            background: #eff6ff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border-left: 5px solid #2563eb;
+        }
+
+        .action-description h3 {
+            margin: 0 0 8px 0;
+            color: #2563eb;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .action-description p {
+            margin: 0;
+            color: #4b5563;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* Responsividade para action-description em celular */
+        @media (max-width: 480px) {
+            .action-description {
+                padding: 10px 12px;
+            }
+            
+            .action-description h3 {
+                font-size: 14px;
+            }
+            
+            .action-description p {
+                font-size: 12px;
+            }
+        }
+
+        /* Checkbox alinhado e maior */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: #374151;
+            gap: 8px;
+            margin-bottom: 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #2563eb;
+            margin-right: 6px;
+            cursor: pointer;
+        }
+
+        /* Responsividade para checkbox em celular */
+        @media (max-width: 480px) {
+            .checkbox-group label {
+                font-size: 13px;
+                gap: 6px;
+            }
+            
+            .checkbox-group input[type="checkbox"] {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        /* Scrollbar personalizada para a sidebar */
+        .alerts-sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .alerts-sidebar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 2px;
+        }
+
+        .alerts-sidebar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
+
+        .alerts-sidebar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        h1 {
+            color: #1f2937;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* Responsividade para h1 em celular */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 16px;
+                text-align: center;
+            }
+        }
+
+        /* Melhorias para touch em dispositivos móveis */
+        @media (hover: none) and (pointer: coarse) {
+            .tab, .refresh-btn, button {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .checkbox-group input[type="checkbox"] {
+                min-width: 44px;
+                min-height: 44px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🔒 Testar API de Segurança</h1>
+    <div class="main-layout">
+        <!-- Conteúdo principal - lado esquerdo -->
+        <div class="container">
+            <h1>🔒 Testar API de Segurança</h1>
 
-        <div class="url-info">
-            <strong>🎯 URL Base:</strong> http://127.0.0.1:8001/fraud
-        </div>
-
-        <div class="tabs">
-            <button class="tab active" onclick="showTab(event, 'login')">LOGIN</button>
-            <button class="tab" onclick="showTab(event, 'wallet')">WALLET</button>
-            <button class="tab" onclick="showTab(event, 'deposito')">DEPOSITO</button>
-            <button class="tab" onclick="showTab(event, 'saque')">SAQUE</button>
-            <button class="tab" onclick="showTab(event, 'startgame')">START GAME</button>
-            <button class="tab" onclick="showTab(event, 'game_transaction')">GAME TRANSACTION</button>
-        </div>
-
-        <!-- LOGIN TAB -->
-        <div id="login" class="tab-content active">
-   
-            <form method="post">
-                <input type="hidden" name="action" value="login">
-                <div class="form-group">
-                    <label>Quantidade de requisições:</label>
-                    <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
-                </div>
-                <div class="form-group">
-                    <label>Delay entre requisições (ms):</label>
-                    <input type="number" name="delay" min="0" max="5000" value="100">
-                </div>
-                <div class="form-group">
-                    <label>CPF Usuario:</label>
-                    <input type="text" name="cpf" value="{{ cpf | default('') }}">
-                </div>
-                <button type="submit">🚀 Iniciar Teste de Login</button>
-            </form>
-        </div>
-
-        <!-- WALLET TAB -->
-        <div id="wallet" class="tab-content">
-            <div class="action-description">
-                <h3>Wallet Action</h3>
-                <p>Testa consultas de carteira para detectar tentativas de acesso não autorizado.</p>
+            <div class="url-info">
+                <strong>🎯 URL Base:</strong> http://127.0.0.1:8001/fraud
             </div>
-            <form method="post">
-                <input type="hidden" name="action" value="wallet">
-                <div class="form-group">
-                    <label>Quantidade de requisições:</label>
-                    <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+
+            <div class="tabs">
+                <button class="tab active" onclick="showTab(event, 'login')">LOGIN</button>
+                <button class="tab" onclick="showTab(event, 'wallet')">WALLET</button>
+                <button class="tab" onclick="showTab(event, 'deposito')">DEPOSITO</button>
+                <button class="tab" onclick="showTab(event, 'saque')">SAQUE</button>
+                <button class="tab" onclick="showTab(event, 'startgame')">START GAME</button>
+                <button class="tab" onclick="showTab(event, 'game_transaction')">GAME TRANSACTION</button>
+            </div>
+
+            <!-- LOGIN TAB -->
+            <div id="login" class="tab-content active">
+                <form method="post">
+                    <input type="hidden" name="action" value="login">
+                    <div class="form-group">
+                        <label>Quantidade de requisições:</label>
+                        <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Delay entre requisições (ms):</label>
+                        <input type="number" name="delay" min="0" max="5000" value="1000">
+                    </div>
+                    <div class="form-group">
+                        <label>CPF Usuario:</label>
+                        <input type="text" name="cpf" >
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" name="ip_variavel" {% if ip_variado %}checked{% endif %}>
+                            IP VARIADO
+                        </label>
+                    </div>
+                    <button type="submit">🚀 Iniciar Teste de Login</button>
+                </form>
+            </div>
+
+            <!-- WALLET TAB -->
+            <div id="wallet" class="tab-content">
+                <div class="action-description">
+                    <h3>Wallet Action</h3>
+                    <p>Testa consultas de carteira para detectar tentativas de acesso não autorizado.</p>
                 </div>
-                <div class="form-group">
-                    <label>Delay entre requisições (ms):</label>
-                    <input type="number" name="delay" min="0" max="5000" value="100">
+                <form method="post">
+                    <input type="hidden" name="action" value="wallet">
+                    <div class="form-group">
+                        <label>Quantidade de requisições:</label>
+                        <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Delay entre requisições (ms):</label>
+                        <input type="number" name="delay" min="0" max="5000" value="100">
+                    </div>
+                    <div class="form-group">
+                        <label>CPF Usuario:</label>
+                        <input type="text" name="cpf">
+                    </div>
+                    <div class="form-group">
+                        <label>Valor da carteira:</label>
+                        <input type="number" name="credit" value="1">
+                    </div>
+                    
+                    <button type="submit">🚀 Iniciar Teste de Wallet</button>
+                </form>
+            </div>
+
+            <!-- DEPOSITO TAB -->
+            <div id="deposito" class="tab-content">
+                <div class="action-description">
+                    <h3>Depósito Action</h3>
+                    <p>Testa transações de depósito para detectar comportamento financeiro suspeito.</p>
                 </div>
-                <button type="submit">🚀 Iniciar Teste de Wallet</button>
-            </form>
+                <form method="post">
+                    <input type="hidden" name="action" value="deposito">
+
+                    <div class="form-group">
+                        <label>Quantidade de requisições:</label>
+                        <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Delay entre requisições (ms):</label>
+                        <input type="number" name="delay" min="0" max="5000" value="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label>CPF Usuario:</label>
+                        <input type="text" name="cpf">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Valor do depósito:</label>
+                        <input type="number" name="deposit" id="deposit-input">
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" name="valor_aleatorio" id="valor-aleatorio" {% if valor_aleatorio %}checked{% endif %}>
+                            Valor Aleatório
+                        </label>
+                    </div>
+
+                    <button type="submit">🚀 Iniciar Teste de Depósito</button>
+                </form>
+            </div>
+
+            <script>
+                const checkbox = document.getElementById("valor-aleatorio");
+                const depositInput = document.getElementById("deposit-input");
+
+                function toggleDepositInput() {
+                    if (checkbox.checked) {
+                        depositInput.value = "";         // Zera o campo
+                        depositInput.disabled = true;    // Desabilita o campo
+                    } else {
+                        depositInput.disabled = false;   // Habilita o campo
+                    }
+                }
+
+                // Aplica a lógica ao carregar a página
+                toggleDepositInput();
+
+                // Aplica a lógica ao clicar na checkbox
+                checkbox.addEventListener("change", toggleDepositInput);
+            </script>
+
+            <!-- SAQUE TAB -->
+            <div id="saque" class="tab-content">
+                <div class="action-description">
+                    <h3>Saque Action</h3>
+                    <p>Testa transações de saque para detectar tentativas de retirada suspeita.</p>
+                </div>
+                <form method="post">
+                    <input type="hidden" name="action" value="saque">
+                    <div class="form-group">
+                        <label>Quantidade de requisições:</label>
+                        <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Delay entre requisições (ms):</label>
+                        <input type="number" name="delay" min="0" max="5000" value="100">
+                    </div>
+                    <button type="submit">🚀 Iniciar Teste de Saque</button>
+                </form>
+            </div>
+
+            <!-- START GAME TAB -->
+            <div id="startgame" class="tab-content">
+                <div class="action-description">
+                    <h3>Start Game Action</h3>
+                    <p>Testa inicialização de jogos para detectar comportamento anômalo de gameplay.</p>
+                </div>
+                <form method="post">
+                    <input type="hidden" name="action" value="startgame">
+                    <div class="form-group">
+                        <label>Quantidade de requisições:</label>
+                        <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Delay entre requisições (ms):</label>
+                        <input type="number" name="delay" min="0" max="5000" value="100">
+                    </div>
+                    <button type="submit">🚀 Iniciar Teste de Start Game</button>
+                </form>
+            </div>
+
+            <!-- GAME TRANSACTION TAB -->
+            <div id="game_transaction" class="tab-content">
+                <div class="action-description">
+                    <h3>Game Transaction Action</h3>
+                    <p>Testa transações dentro do jogo para detectar comportamento fraudulento.</p>
+                </div>
+                <form method="post">
+                    <input type="hidden" name="action" value="game_transaction">
+                    <div class="form-group">
+                        <label>Quantidade de requisições:</label>
+                        <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Delay entre requisições (ms):</label>
+                        <input type="number" name="delay" min="0" max="5000" value="100">
+                    </div>
+                    <button type="submit">🚀 Iniciar Teste de Game Transaction</button>
+                </form>
+            </div>
         </div>
 
-        <!-- DEPOSITO TAB -->
-        <div id="deposito" class="tab-content">
-            <div class="action-description">
-                <h3>Depósito Action</h3>
-                <p>Testa transações de depósito para detectar comportamento financeiro suspeito.</p>
+        <!-- Sidebar de Alerts - lado direito -->
+        <aside class="alerts-sidebar">
+            <div class="alerts-header">
+                <h2>⚠️ Alerts Recentes</h2>
+                <button id="refresh-alerts-btn" class="refresh-btn" onclick="atualizarAlerts()">
+                    Atualizar
+                </button>
             </div>
-            <form method="post">
-                <input type="hidden" name="action" value="deposito">
-                <div class="form-group">
-                    <label>Quantidade de requisições:</label>
-                    <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
-                </div>
-                <div class="form-group">
-                    <label>Delay entre requisições (ms):</label>
-                    <input type="number" name="delay" min="0" max="5000" value="100">
-                </div>
-                <button type="submit">🚀 Iniciar Teste de Depósito</button>
-            </form>
-        </div>
-
-        <!-- SAQUE TAB -->
-        <div id="saque" class="tab-content">
-            <div class="action-description">
-                <h3>Saque Action</h3>
-                <p>Testa transações de saque para detectar tentativas de retirada suspeita.</p>
-            </div>
-            <form method="post">
-                <input type="hidden" name="action" value="saque">
-                <div class="form-group">
-                    <label>Quantidade de requisições:</label>
-                    <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
-                </div>
-                <div class="form-group">
-                    <label>Delay entre requisições (ms):</label>
-                    <input type="number" name="delay" min="0" max="5000" value="100">
-                </div>
-                <button type="submit">🚀 Iniciar Teste de Saque</button>
-            </form>
-        </div>
-
-        <!-- START GAME TAB -->
-        <div id="startgame" class="tab-content">
-            <div class="action-description">
-                <h3>Start Game Action</h3>
-                <p>Testa inicialização de jogos para detectar comportamento anômalo de gameplay.</p>
-            </div>
-            <form method="post">
-                <input type="hidden" name="action" value="startgame">
-                <div class="form-group">
-                    <label>Quantidade de requisições:</label>
-                    <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
-                </div>
-                <div class="form-group">
-                    <label>Delay entre requisições (ms):</label>
-                    <input type="number" name="delay" min="0" max="5000" value="100">
-                </div>
-                <button type="submit">🚀 Iniciar Teste de Start Game</button>
-            </form>
-        </div>
-
-        <!-- GAME TRANSACTION TAB -->
-        <div id="game_transaction" class="tab-content">
-            <div class="action-description">
-                <h3>Game Transaction Action</h3>
-                <p>Testa transações dentro do jogo para detectar comportamento fraudulento.</p>
-            </div>
-            <form method="post">
-                <input type="hidden" name="action" value="game_transaction">
-                <div class="form-group">
-                    <label>Quantidade de requisições:</label>
-                    <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
-                </div>
-                <div class="form-group">
-                    <label>Delay entre requisições (ms):</label>
-                    <input type="number" name="delay" min="0" max="5000" value="100">
-                </div>
-                <button type="submit">🚀 Iniciar Teste de Game Transaction</button>
-            </form>
-        </div>
+            <ul class="alerts-list" id="alerts-list">
+                {% for alert in alerts %}
+                    <li class="alert-item">
+                        <strong>{{ alert.alert }}</strong>
+                        <div class="alert-name">{{ alert.name }}</div>
+                        <div class="alert-customer-id">{{ alert.customer_id }}</div>
+                        <div class="alert-customer-name">{{ alert.customer_name }}</div>
+                        <div class="alert-date">{{ alert.date }}</div>
+                    </li>
+                {% else %}
+                    <li class="alert-item empty">Nenhum alerta encontrado.</li>
+                {% endfor %}
+            </ul>
+        </aside>
     </div>
 
     <script>
@@ -154,6 +764,64 @@
         document.getElementById(tabId).classList.add('active');
         event.currentTarget.classList.add('active');
     }
+
+    async function atualizarAlerts() {
+        const btn = document.getElementById('refresh-alerts-btn');
+        const alertsList = document.getElementById('alerts-list');
+        
+        // Mostra loading no botão
+        btn.classList.add('loading');
+        btn.textContent = 'Carregando...';
+        btn.disabled = true;
+        
+        try {
+            // Faz requisição para buscar novos alerts
+            const response = await fetch('/alerts');
+            const data = await response.json();
+            
+            if (data.success) {
+                // Limpa a lista atual
+                alertsList.innerHTML = '';
+                
+                // Adiciona os novos alerts
+                if (data.alerts && data.alerts.length > 0) {
+                    data.alerts.forEach(alert => {
+                        const alertItem = document.createElement('li');
+                        alertItem.className = 'alert-item';
+                        alertItem.innerHTML = `
+                            <strong>${alert.alert}</strong>
+                            <div class="alert-customer-id">${alert.customer_id}</div>
+                            <div class="alert-customer-name">${alert.customer_name}</div>
+                            <div class="alert-date">${alert.date}</div>
+                        `;
+                        alertsList.appendChild(alertItem);
+                    });
+                } else {
+                    // Se não há alerts
+                    const emptyItem = document.createElement('li');
+                    emptyItem.className = 'alert-item empty';
+                    emptyItem.textContent = 'Nenhum alerta encontrado.';
+                    alertsList.appendChild(emptyItem);
+                }
+                
+                console.log('✅ Alerts atualizados com sucesso!');
+            } else {
+                console.error('❌ Erro ao buscar alerts:', data.error);
+                alert('Erro ao atualizar alerts: ' + data.error);
+            }
+        } catch (error) {
+            console.error('❌ Erro na requisição:', error);
+            alert('Erro ao conectar com o servidor');
+        } finally {
+            // Remove loading do botão
+            btn.classList.remove('loading');
+            btn.textContent = 'Atualizar';
+            btn.disabled = false;
+        }
+    }
+
+    // Opcional: Atualizar alerts automaticamente a cada 30 segundos
+    // setInterval(atualizarAlerts, 30000);
     </script>
 </body>
 </html>

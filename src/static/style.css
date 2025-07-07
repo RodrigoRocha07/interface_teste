@@ -11,18 +11,118 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Layout principal com flexbox */
+.main-layout {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    width: 100%;
+    /* Remova o max-width e margin: 0 auto */
+}
+
 .container {
+    flex: 2 1 0;
+    min-width: 0;
     max-width: 800px;
-    margin: 0 auto;
     background: #ffffff;
     padding: 32px 40px;
     border-radius: 12px;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
     transition: box-shadow 0.3s ease;
+    /* Remova o margin: 0 auto */
 }
 
 .container:hover {
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Sidebar de Alerts */
+.alerts-sidebar {
+    flex: 1 1 320px;
+    background: #f9fafb;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+    padding: 24px 20px;
+    max-width: 380px;
+    min-width: 280px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: sticky;
+    top: 20px;
+}
+
+.alerts-sidebar h2 {
+    font-size: 1.2rem;
+    color: #dc2626;
+    margin-bottom: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.alerts-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.alert-item {
+    background: #fff;
+    border-left: 4px solid #dc2626;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.alert-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.12);
+}
+
+.alert-item strong {
+    color: #b91c1c;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.alert-message {
+    color: #374151;
+    font-size: 0.9rem;
+    margin: 6px 0 8px 0;
+    line-height: 1.4;
+}
+
+.alert-date {
+    color: #6b7280;
+    font-size: 0.8rem;
+    text-align: right;
+    font-weight: 500;
+}
+
+.alert-item.empty {
+    border: none;
+    background: none;
+    color: #6b7280;
+    text-align: center;
+    box-shadow: none;
+    font-style: italic;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 1200px) {
+    .main-layout {
+        flex-direction: column;
+        gap: 24px;
+    }
+    
+    .alerts-sidebar {
+        max-width: none;
+        max-height: 400px;
+        position: static;
+    }
 }
 
 .tabs {
@@ -30,6 +130,7 @@ body {
     border-bottom: 2px solid #e0e6ed;
     margin-bottom: 28px;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .tab {
@@ -157,4 +258,48 @@ button:hover {
     color: #4b5563;
     font-size: 14px;
     line-height: 1.5;
+}
+
+/* Checkbox alinhado e maior */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 15px;
+    color: #374151;
+    gap: 10px;
+    margin-bottom: 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    accent-color: #2563eb; /* cor azul igual ao botão */
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+/* Scrollbar personalizada para a sidebar */
+.alerts-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.alerts-sidebar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.alerts-sidebar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.alerts-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
 }
