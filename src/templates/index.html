@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Testar API de Segurança</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 Testar API de Segurança</h1>
+
+        <div class="url-info">
+            <strong>🎯 URL Base:</strong> http://127.0.0.1:8001/fraud
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab(event, 'login')">LOGIN</button>
+            <button class="tab" onclick="showTab(event, 'wallet')">WALLET</button>
+            <button class="tab" onclick="showTab(event, 'deposito')">DEPOSITO</button>
+            <button class="tab" onclick="showTab(event, 'saque')">SAQUE</button>
+            <button class="tab" onclick="showTab(event, 'startgame')">START GAME</button>
+            <button class="tab" onclick="showTab(event, 'game_transaction')">GAME TRANSACTION</button>
+        </div>
+
+        <!-- LOGIN TAB -->
+        <div id="login" class="tab-content active">
+   
+            <form method="post">
+                <input type="hidden" name="action" value="login">
+                <div class="form-group">
+                    <label>Quantidade de requisições:</label>
+                    <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                </div>
+                <div class="form-group">
+                    <label>Delay entre requisições (ms):</label>
+                    <input type="number" name="delay" min="0" max="5000" value="100">
+                </div>
+                <div class="form-group">
+                    <label>CPF Usuario:</label>
+                    <input type="text" name="cpf" value="{{ cpf | default('') }}">
+                </div>
+                <button type="submit">🚀 Iniciar Teste de Login</button>
+            </form>
+        </div>
+
+        <!-- WALLET TAB -->
+        <div id="wallet" class="tab-content">
+            <div class="action-description">
+                <h3>Wallet Action</h3>
+                <p>Testa consultas de carteira para detectar tentativas de acesso não autorizado.</p>
+            </div>
+            <form method="post">
+                <input type="hidden" name="action" value="wallet">
+                <div class="form-group">
+                    <label>Quantidade de requisições:</label>
+                    <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                </div>
+                <div class="form-group">
+                    <label>Delay entre requisições (ms):</label>
+                    <input type="number" name="delay" min="0" max="5000" value="100">
+                </div>
+                <button type="submit">🚀 Iniciar Teste de Wallet</button>
+            </form>
+        </div>
+
+        <!-- DEPOSITO TAB -->
+        <div id="deposito" class="tab-content">
+            <div class="action-description">
+                <h3>Depósito Action</h3>
+                <p>Testa transações de depósito para detectar comportamento financeiro suspeito.</p>
+            </div>
+            <form method="post">
+                <input type="hidden" name="action" value="deposito">
+                <div class="form-group">
+                    <label>Quantidade de requisições:</label>
+                    <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                </div>
+                <div class="form-group">
+                    <label>Delay entre requisições (ms):</label>
+                    <input type="number" name="delay" min="0" max="5000" value="100">
+                </div>
+                <button type="submit">🚀 Iniciar Teste de Depósito</button>
+            </form>
+        </div>
+
+        <!-- SAQUE TAB -->
+        <div id="saque" class="tab-content">
+            <div class="action-description">
+                <h3>Saque Action</h3>
+                <p>Testa transações de saque para detectar tentativas de retirada suspeita.</p>
+            </div>
+            <form method="post">
+                <input type="hidden" name="action" value="saque">
+                <div class="form-group">
+                    <label>Quantidade de requisições:</label>
+                    <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                </div>
+                <div class="form-group">
+                    <label>Delay entre requisições (ms):</label>
+                    <input type="number" name="delay" min="0" max="5000" value="100">
+                </div>
+                <button type="submit">🚀 Iniciar Teste de Saque</button>
+            </form>
+        </div>
+
+        <!-- START GAME TAB -->
+        <div id="startgame" class="tab-content">
+            <div class="action-description">
+                <h3>Start Game Action</h3>
+                <p>Testa inicialização de jogos para detectar comportamento anômalo de gameplay.</p>
+            </div>
+            <form method="post">
+                <input type="hidden" name="action" value="startgame">
+                <div class="form-group">
+                    <label>Quantidade de requisições:</label>
+                    <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                </div>
+                <div class="form-group">
+                    <label>Delay entre requisições (ms):</label>
+                    <input type="number" name="delay" min="0" max="5000" value="100">
+                </div>
+                <button type="submit">🚀 Iniciar Teste de Start Game</button>
+            </form>
+        </div>
+
+        <!-- GAME TRANSACTION TAB -->
+        <div id="game_transaction" class="tab-content">
+            <div class="action-description">
+                <h3>Game Transaction Action</h3>
+                <p>Testa transações dentro do jogo para detectar comportamento fraudulento.</p>
+            </div>
+            <form method="post">
+                <input type="hidden" name="action" value="game_transaction">
+                <div class="form-group">
+                    <label>Quantidade de requisições:</label>
+                    <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                </div>
+                <div class="form-group">
+                    <label>Delay entre requisições (ms):</label>
+                    <input type="number" name="delay" min="0" max="5000" value="100">
+                </div>
+                <button type="submit">🚀 Iniciar Teste de Game Transaction</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    function showTab(event, tabId) {
+        // Remove "active" de todos conteúdos e abas
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+        // Ativa aba e conteúdo clicado
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+    </script>
+</body>
+</html>
