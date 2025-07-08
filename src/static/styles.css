@@ -73,6 +73,7 @@ h1 {
     text-align: center;
     box-shadow: 0 4px 14px rgba(99, 102, 241, 0.15);
 }
+
 .tabs {
     display: flex;
     border-bottom: 1.5px solid var(--border);
@@ -83,12 +84,12 @@ h1 {
     flex-wrap: nowrap;
     max-width: 100%;
     box-sizing: border-box;
-    /* Esconde a barra de rolagem em todos os navegadores */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* IE 10+ */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
+
 .tabs::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
 }
 
 .tab {
@@ -106,38 +107,6 @@ h1 {
     transition: var(--transition);
     position: relative;
     white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.tab:hover {
-    background: var(--surface-2);
-    color: var(--primary);
-}
-
-.tab.active {
-    background: var(--primary);
-    color: #fff;
-    font-weight: 600;
-}
-.tab {
-    flex: 0 0 auto; /* Impede que as tabs cresçam para ocupar todo o espaço */
-    min-width: 120px;
-    max-width: 200px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    background: none;
-    border: none;
-    border-radius: 8px 8px 0 0;
-    font-weight: 500;
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: var(--transition);
-    position: relative;
-    min-width: 120px;
-    white-space: nowrap; /* Impede quebra de linha */
     text-overflow: ellipsis;
     overflow: hidden;
 }
@@ -231,6 +200,40 @@ h1 {
     border-color: var(--primary-light);
 }
 
+/* Inputs com checkbox ao lado */
+.form-row .input-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-top: 0.3rem;
+}
+
+.input-checkbox-row input[type="number"] {
+    flex: 1;
+    max-width: 200px;
+    min-width: 120px;
+}
+
+.checkbox-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+    cursor: pointer;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.checkbox-inline input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+/* Checkbox group tradicional */
 .checkbox-group {
     display: flex;
     align-items: center;
@@ -435,6 +438,17 @@ button:active,
         min-width: 90px;
         padding: 0.5rem 0.7rem;
         font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-row .input-checkbox-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    .input-checkbox-row input[type="number"] {
+        max-width: 100%;
     }
 }
 

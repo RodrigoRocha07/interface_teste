@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>Testar API de Segurança</title>
     <link rel="stylesheet" href="static/styles.css">
 </head>
@@ -11,7 +10,7 @@
     <div class="main-layout">
         <!-- Conteúdo principal - lado esquerdo -->
         <div class="container">
-            <h1>🔒 Testar API de Segurança</h1>
+            <h1>Interface de Teste para API de Segurança</h1>
 
             <div class="url-info">
                 <strong>🎯 URL Base:</strong> /fraud/betshield/external_analyse/
@@ -76,7 +75,6 @@
                         <label>Valor da carteira:</label>
                         <input type="number" name="credit" value="1">
                     </div>
-                    
                     <button type="submit">🚀 Iniciar Teste de Wallet</button>
                 </form>
             </div>
@@ -105,16 +103,16 @@
                         <input type="text" name="cpf">
                     </div>
 
-                    <div class="form-group">
+                    <!-- Valor do depósito + checkbox ao lado -->
+                    <div class="form-group form-row">
                         <label>Valor do depósito:</label>
-                        <input type="number" id="deposit-input" name="deposit">
-                    </div>
-
-                    <div class="form-group checkbox-group">
-                        <label>
-                            <input type="checkbox" id="valor-aleatorio-deposito" name="valor_aleatorio"  {% if valor_aleatorio %}checked{% endif %}>
-                            Valor Aleatório
-                        </label>
+                        <div class="input-checkbox-row">
+                            <input type="number" id="deposit-input" name="deposit">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="valor-aleatorio-deposito" name="valor_aleatorio" {% if valor_aleatorio %}checked{% endif %}>
+                                Valor Aleatório
+                            </label>
+                        </div>
                     </div>
 
                     <button type="submit">🚀 Iniciar Teste de Depósito</button>
@@ -141,17 +139,19 @@
                         <label>CPF Usuario:</label>
                         <input type="text" name="cpf">
                     </div>
-                    <div class="form-group">
+
+                    <!-- Valor do saque + checkbox ao lado -->
+                    <div class="form-group form-row">
                         <label>Valor do saque:</label>
-                        <input type="number" id="saque-input" name="saque">
+                        <div class="input-checkbox-row">
+                            <input type="number" id="saque-input" name="saque">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="valor-aleatorio-saque" name="valor_aleatorio" {% if valor_aleatorio %}checked{% endif %}>
+                                Valor Aleatório
+                            </label>
+                        </div>
                     </div>
 
-                    <div class="form-group checkbox-group">
-                        <label>
-                            <input type="checkbox" id="valor-aleatorio-saque" name="valor_aleatorio" {% if valor_aleatorio %}checked{% endif %}>
-                            Valor Aleatório
-                        </label>
-                    </div>
                     <button type="submit">🚀 Iniciar Teste de Saque</button>
                 </form>
             </div>
@@ -209,27 +209,35 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Tipo de transação:</label>
+                        <select name="transaction_type" required>
+                            <option value="debit">Débito</option>
+                            <option value="credit">Crédito</option>
+                        </select>
+                    </div>
+
+                    <!-- Valor da transação + checkbox ao lado -->
+                    <div class="form-group form-row">
                         <label>Valor da transação:</label>
-                        <input type="number" id="game-transaction-input" name="transaction_value">
-                    </div>
-                    
-                    <div class="form-group checkbox-group">
-                        <label>
-                            <input type="checkbox" id="valor-aleatorio-game-transaction" name="valor_aleatorio_game_transaction" {% if valor_aleatorio_game_transaction %}checked{% endif %}>
-                            Valor Aleatório
-                        </label>
+                        <div class="input-checkbox-row">
+                            <input type="number" id="game-transaction-input" name="transaction_value">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="valor-aleatorio-game-transaction" name="valor_aleatorio_game_transaction" {% if valor_aleatorio_game_transaction %}checked{% endif %}>
+                                Valor Aleatório
+                            </label>
+                        </div>
                     </div>
 
-                    <div class="form-group">
+                    <!-- ID do jogo + checkbox ao lado -->
+                    <div class="form-group form-row">
                         <label>ID do jogo:</label>
-                        <input type="number" id="game-id-input" name="game_id">
-                    </div>
-
-                    <div class="form-group checkbox-group">
-                        <label>
-                            <input type="checkbox" id="jogo-aleatorio-game-transaction" name="jogo_aleatorio_game_transaction" {% if jogo_aleatorio_game_transaction %}checked{% endif %}>
-                            Jogo Aleatório
-                        </label>
+                        <div class="input-checkbox-row">
+                            <input type="number" id="game-id-input" name="game_id">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="jogo-aleatorio-game-transaction" name="jogo_aleatorio_game_transaction" {% if jogo_aleatorio_game_transaction %}checked{% endif %}>
+                                Jogo Aleatório
+                            </label>
+                        </div>
                     </div>
 
                     <button type="submit">🚀 Iniciar Teste de Game Transaction</button>
