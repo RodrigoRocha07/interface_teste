@@ -202,16 +202,17 @@ h1 {
 
 /* Inputs com checkbox ao lado */
 .form-row .input-checkbox-row {
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 1.2rem;
     margin-top: 0.3rem;
 }
 
-.input-checkbox-row input[type="number"] {
-    flex: 1;
-    max-width: 200px;
-    min-width: 120px;
+
+/* Classe específica para inputs com checkbox */
+.placeholder_input_with_checkbox {
+    max-width: 80%;
 }
 
 .checkbox-inline {
@@ -224,13 +225,6 @@ h1 {
     cursor: pointer;
     font-size: 0.95rem;
     white-space: nowrap;
-}
-
-.checkbox-inline input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--primary);
-    cursor: pointer;
 }
 
 /* Checkbox group tradicional */
@@ -250,11 +244,21 @@ h1 {
     color: var(--text-secondary);
 }
 
-.checkbox-group input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
+/* TODAS AS CHECKBOXES COM O MESMO ESTILO */
+.checkbox-group input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
     accent-color: var(--primary);
     cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+.checkbox-group input[type="checkbox"]:hover,
+.checkbox-inline input[type="checkbox"]:hover {
+    transform: scale(1.1);
 }
 
 button,
@@ -448,6 +452,9 @@ button:active,
         gap: 0.5rem;
     }
     .input-checkbox-row input[type="number"] {
+        max-width: 100%;
+    }
+    .placeholder_input_with_checkbox {
         max-width: 100%;
     }
 }
