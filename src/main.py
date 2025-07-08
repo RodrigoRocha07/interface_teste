@@ -75,7 +75,7 @@ def gerar_dados_acao(action, numero_requisicao, data):
         if data['valor_aleatorio_game_transaction']:
             response['meta']['amount'] = random.randint(100, 9999)
         if data['jogo_aleatorio_game_transaction']:
-            response['meta']['game_id'] = random.randint(1, 999)
+            response['meta']['casino_transaction']['game_id'] = random.randint(1, 999)
         return response
     
     else:
