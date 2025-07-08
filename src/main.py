@@ -13,7 +13,7 @@ from src.utils.deposit import retorna_dados_transaction_deposit
 from src.utils.saque import retorna_dados_transaction_saque
 
 from src.utils.start_game import retorna_start_game
-
+from src.utils.dados_transaction_game import retorna_dados_transaction_game
 
 from fastapi.responses import JSONResponse
 from datetime import datetime
@@ -65,14 +65,18 @@ def gerar_dados_acao(action, numero_requisicao, data):
         return response
     
     elif action == "game_transaction":
-        return {
-            **dados_base,
-            "action": "game_transaction",
-            "user_id": f"user_{numero_requisicao}",
-            "game_id": "poker_texas",
-            "transaction_type": "bet",
-            "amount": 25.0
-        }
+        print(data)
+        response = retorna_dados_transaction_game(
+            cpf = data.get("cpf"),           # ← argumento nomeado
+            game_id = data.get("game_id"),   # ← argumento nomeado
+            value = data.get("transaction_value"),   # ← argumento posicional (ERRO!)
+            type = data.get("transaction_type")     # ← argumento posicional (ERRO!)
+        )
+        if data['valor_aleatorio_game_transaction']:
+            response['meta']['amount'] = random.randint(100, 9999)
+        if data['jogo_aleatorio_game_transaction']:
+            response['meta']['game_id'] = random.randint(1, 999)
+        return response
     
     else:
         return dados_base

@@ -1,4 +1,4 @@
-def retorna_dados_transaction_game(cpf, type, value):
+def retorna_dados_transaction_game(cpf, type, value, game_id):
     return {
     "email": "email@teste.com",
     "action": "game_cash_transaction",
@@ -34,7 +34,7 @@ def retorna_dados_transaction_game(cpf, type, value):
         "unix_timestamp": 1749849246,
         "created_at": "2025-06-13T21:14:06.000000Z",
         "updated_at": "2025-06-13T21:14:06.000000Z",
-        "game_id": 36430,
+        "game_id": game_id,
         "is_freespin": 0,
         "reference_transaction_id": 28446104403,
         "reference_transaction_type": "result",
