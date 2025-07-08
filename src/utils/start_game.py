@@ -1,4 +1,4 @@
-def retorna_start_game(cpf):
+def retorna_start_game(cpf, game_id):
     return {
         "email":"email@teste.com",
         "action":"start_game",
@@ -6,7 +6,7 @@ def retorna_start_game(cpf):
         "reference_id":"02",
         "enterprise_token":"sua-chave-api",
     "meta": {
-        "id": 36430,
+        "id": game_id,
         "provider_id": 217,
         "reference": "126",
         "name": "Fortune Tiger",

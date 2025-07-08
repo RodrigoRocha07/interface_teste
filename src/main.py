@@ -12,6 +12,8 @@ from src.utils.dados_wallet import retornar_dados_wallet
 from src.utils.deposit import retorna_dados_transaction_deposit
 from src.utils.saque import retorna_dados_transaction_saque
 
+from src.utils.start_game import retorna_start_game
+
 
 from fastapi.responses import JSONResponse
 from datetime import datetime
@@ -59,13 +61,8 @@ def gerar_dados_acao(action, numero_requisicao, data):
         return response
     
     elif action == "startgame":
-        return {
-            **dados_base,
-            "action": "start_game",
-            "user_id": f"user_{numero_requisicao}",
-            "game_id": "poker_texas",
-            "bet_amount": 10.0
-        }
+        response = retorna_start_game(data.get("cpf"), data.get("game_id"))
+        return response
     
     elif action == "game_transaction":
         return {
