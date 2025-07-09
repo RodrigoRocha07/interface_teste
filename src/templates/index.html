@@ -15,235 +15,281 @@
             <div class="url-info">
                 <strong>🎯 URL Base:</strong> /fraud/betshield/external_analyse/
             </div>
-
             <div class="tabs">
-                <button class="tab active" onclick="showTab(event, 'login')">LOGIN</button>
-                <button class="tab" onclick="showTab(event, 'wallet')">WALLET</button>
-                <button class="tab" onclick="showTab(event, 'deposito')">DEPOSITO</button>
-                <button class="tab" onclick="showTab(event, 'saque')">SAQUE</button>
-                <button class="tab" onclick="showTab(event, 'startgame')">START GAME</button>
-                <button class="tab" onclick="showTab(event, 'game_transaction')">GAME TRANSACTION</button>
+                <button class="main-tab active" onclick="MainShowTab(event, 'actions')">ACTIONS</button>
+                <button class="main-tab" onclick="MainShowTab(event, 'frauds')">FRAUDS</button>
             </div>
 
-            <!-- LOGIN TAB -->
-            <div id="login" class="tab-content active">
-                <form method="post">
-                    <input type="hidden" name="action" value="login">
-                    <div class="form-group">
-                        <label>Quantidade de requisições:</label>
-                        <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Delay entre requisições (ms):</label>
-                        <input type="number" name="delay" min="0" max="5000" value="1000">
-                    </div>
-                    <div class="form-group">
-                        <label>CPF Usuario:</label>
-                        <input type="text" name="cpf" >
-                    </div>
-                    <div class="form-group checkbox-group">
-                        <label>
-                            <input type="checkbox" name="ip_variavel" {% if ip_variado %}checked{% endif %}>
-                            IP VARIADO
-                        </label>
-                    </div>
-                    <button type="submit">🚀 Iniciar Teste de Login</button>
-                </form>
-            </div>
+            <div id="actions" class="main-tab-content active">
 
-            <!-- WALLET TAB -->
-            <div id="wallet" class="tab-content">
-                <div class="action-description">
-                    <h3>Wallet Action</h3>
-                    <p>Testa consultas de carteira para detectar tentativas de acesso não autorizado.</p>
+                <div class="tabs">
+                    <button class="tab active" onclick="showTab(event, 'login')">LOGIN</button>
+                    <button class="tab" onclick="showTab(event, 'wallet')">WALLET</button>
+                    <button class="tab" onclick="showTab(event, 'deposito')">DEPOSITO</button>
+                    <button class="tab" onclick="showTab(event, 'saque')">SAQUE</button>
+                    <button class="tab" onclick="showTab(event, 'startgame')">START GAME</button>
+                    <button class="tab" onclick="showTab(event, 'game_transaction')">GAME TRANSACTION</button>
                 </div>
-                <form method="post">
-                    <input type="hidden" name="action" value="wallet">
-                    <div class="form-group">
-                        <label>Quantidade de requisições:</label>
-                        <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Delay entre requisições (ms):</label>
-                        <input type="number" name="delay" min="0" max="5000" value="100">
-                    </div>
-                    <div class="form-group">
-                        <label>CPF Usuario:</label>
-                        <input type="text" name="cpf">
-                    </div>
-                    <div class="form-group">
-                        <label>Valor da carteira:</label>
-                        <input type="number" name="credit" value="1">
-                    </div>
-                    <button type="submit">🚀 Iniciar Teste de Wallet</button>
-                </form>
-            </div>
 
-            <!-- DEPOSITO TAB -->
-            <div id="deposito" class="tab-content">
-                <div class="action-description">
-                    <h3>Depósito Action</h3>
-                    <p>Testa transações de depósito para detectar comportamento financeiro suspeito.</p>
-                </div>
-                <form method="post">
-                    <input type="hidden" name="action" value="deposito">
-
-                    <div class="form-group">
-                        <label>Quantidade de requisições:</label>
-                        <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Delay entre requisições (ms):</label>
-                        <input type="number" name="delay" min="0" max="5000" value="100">
-                    </div>
-
-                    <div class="form-group">
-                        <label>CPF Usuario:</label>
-                        <input type="text" name="cpf">
-                    </div>
-
-                    <!-- Valor do depósito + checkbox ao lado -->
-                    <div class="form-group form-row">
-                        <label>Valor do depósito:</label>
-                        <div class="input-checkbox-row">
-                            <input type="number" id="deposit-input" class="placeholder_input_with_checkbox" name="deposit">
-                            <label class="checkbox-inline">
-                                <input type="checkbox" id="valor-aleatorio-deposito" name="valor_aleatorio" {% if valor_aleatorio %}checked{% endif %}>
-                                Valor Aleatório
+                <!-- LOGIN TAB -->
+                <div id="login" class="tab-content active">
+                    <form method="post">
+                        <input type="hidden" name="action" value="login">
+                        <div class="form-group">
+                            <label>Quantidade de requisições:</label>
+                            <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Delay entre requisições (ms):</label>
+                            <input type="number" name="delay" min="0" max="5000" value="1000">
+                        </div>
+                        <div class="form-group">
+                            <label>CPF Usuario:</label>
+                            <input type="text" name="cpf" >
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" name="ip_variavel" {% if ip_variado %}checked{% endif %}>
+                                IP VARIADO
                             </label>
                         </div>
-                    </div>
+                        <button type="submit">🚀 Iniciar Teste de Login</button>
+                    </form>
+                </div>
 
-                    <button type="submit">🚀 Iniciar Teste de Depósito</button>
-                </form>
+                <!-- WALLET TAB -->
+                <div id="wallet" class="tab-content">
+                    <div class="action-description">
+                        <h3>Wallet Action</h3>
+                        <p>Testa consultas de carteira para detectar tentativas de acesso não autorizado.</p>
+                    </div>
+                    <form method="post">
+                        <input type="hidden" name="action" value="wallet">
+                        <div class="form-group">
+                            <label>Quantidade de requisições:</label>
+                            <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Delay entre requisições (ms):</label>
+                            <input type="number" name="delay" min="0" max="5000" value="100">
+                        </div>
+                        <div class="form-group">
+                            <label>CPF Usuario:</label>
+                            <input type="text" name="cpf">
+                        </div>
+                        <div class="form-group">
+                            <label>Valor da carteira:</label>
+                            <input type="number" name="credit" value="1">
+                        </div>
+                        <button type="submit">🚀 Iniciar Teste de Wallet</button>
+                    </form>
+                </div>
+
+                <!-- DEPOSITO TAB -->
+                <div id="deposito" class="tab-content">
+                    <div class="action-description">
+                        <h3>Depósito Action</h3>
+                        <p>Testa transações de depósito para detectar comportamento financeiro suspeito.</p>
+                    </div>
+                    <form method="post">
+                        <input type="hidden" name="action" value="deposito">
+
+                        <div class="form-group">
+                            <label>Quantidade de requisições:</label>
+                            <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Delay entre requisições (ms):</label>
+                            <input type="number" name="delay" min="0" max="5000" value="100">
+                        </div>
+
+                        <div class="form-group">
+                            <label>CPF Usuario:</label>
+                            <input type="text" name="cpf">
+                        </div>
+
+                        <!-- Valor do depósito + checkbox ao lado -->
+                        <div class="form-group form-row">
+                            <label>Valor do depósito:</label>
+                            <div class="input-checkbox-row">
+                                <input type="number" id="deposit-input" class="placeholder_input_with_checkbox" name="deposit">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="valor-aleatorio-deposito" name="valor_aleatorio" {% if valor_aleatorio %}checked{% endif %}>
+                                    Valor Aleatório
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit">🚀 Iniciar Teste de Depósito</button>
+                    </form>
+                </div>
+
+                <!-- SAQUE TAB -->
+                <div id="saque" class="tab-content">
+                    <div class="action-description">
+                        <h3>Saque Action</h3>
+                        <p>Testa transações de saque para detectar tentativas de retirada suspeita.</p>
+                    </div>
+                    <form method="post">
+                        <input type="hidden" name="action" value="saque">
+                        <div class="form-group">
+                            <label>Quantidade de requisições:</label>
+                            <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Delay entre requisições (ms):</label>
+                            <input type="number" name="delay" min="0" max="5000" value="100">
+                        </div>
+                        <div class="form-group">
+                            <label>CPF Usuario:</label>
+                            <input type="text" name="cpf">
+                        </div>
+
+                        <!-- Valor do saque + checkbox ao lado -->
+                        <div class="form-group form-row">
+                            <label>Valor do saque:</label>
+                            <div class="input-checkbox-row">
+                                <input type="number" id="saque-input" class="placeholder_input_with_checkbox" name="saque">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="valor-aleatorio-saque" name="valor_aleatorio" {% if valor_aleatorio %}checked{% endif %}>
+                                    Valor Aleatório
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit">🚀 Iniciar Teste de Saque</button>
+                    </form>
+                </div>
+
+                <!-- START GAME TAB -->
+                <div id="startgame" class="tab-content">
+                    <div class="action-description">
+                        <h3>Start Game Action</h3>
+                        <p>Testa inicialização de jogos para detectar comportamento anômalo de gameplay.</p>
+                    </div>
+                    <form method="post">
+                        <input type="hidden" name="action" value="startgame">
+                        <div class="form-group">
+                            <label>Quantidade de requisições:</label>
+                            <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Delay entre requisições (ms):</label>
+                            <input type="number" name="delay" min="0" max="5000" value="100">
+                        </div>
+                        <div class="form-group">
+                            <label>CPF Usuario:</label>
+                            <input type="text" name="cpf">
+                        </div>
+                        <div class="form-group">
+                            <label>Id do jogo:</label>
+                            <input type="number" id="id-game-input" name="game_id">
+                        </div>
+                        <button type="submit">🚀 Iniciar Teste de Start Game</button>
+                    </form>
+                </div>
+
+                <!-- GAME TRANSACTION TAB -->
+                <div id="game_transaction" class="tab-content">
+                    <div class="action-description">
+                        <h3>Game Transaction Action</h3>
+                        <p>Testa transações dentro do jogo para detectar comportamento fraudulento.</p>
+                    </div>
+                    <form method="post">
+                        <input type="hidden" name="action" value="game_transaction">
+
+                        <div class="form-group">
+                            <label>Quantidade de requisições:</label>
+                            <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Delay entre requisições (ms):</label>
+                            <input type="number" name="delay" min="0" max="5000" value="100">
+                        </div>
+
+                        <div class="form-group">
+                            <label>CPF Usuario:</label>
+                            <input type="text" name="cpf">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tipo de transação:</label>
+                            <select name="transaction_type" required>
+                                <option value="debit">Débito</option>
+                                <option value="credit">Crédito</option>
+                            </select>
+                        </div>
+
+                        <!-- Valor da transação + checkbox ao lado -->
+                        <div class="form-group form-row">
+                            <label>Valor da transação:</label>
+                            <div class="input-checkbox-row">
+                                <input type="number" class="placeholder_input_with_checkbox" id="game-transaction-input" name="transaction_value">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="valor-aleatorio-game-transaction" name="valor_aleatorio_game_transaction" {% if valor_aleatorio_game_transaction %}checked{% endif %}>
+                                    Valor Aleatório
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- ID do jogo + checkbox ao lado -->
+                        <div class="form-group form-row">
+                            <label>ID do jogo:</label>
+                            <div class="input-checkbox-row">
+                                <input type="number" id="game-id-input" class="placeholder_input_with_checkbox" name="game_id">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="jogo-aleatorio-game-transaction" name="jogo_aleatorio_game_transaction" {% if jogo_aleatorio_game_transaction %}checked{% endif %}>
+                                    Jogo Aleatório
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit">🚀 Iniciar Teste de Game Transaction</button>
+                    </form>
+                </div>
             </div>
 
-            <!-- SAQUE TAB -->
-            <div id="saque" class="tab-content">
-                <div class="action-description">
-                    <h3>Saque Action</h3>
-                    <p>Testa transações de saque para detectar tentativas de retirada suspeita.</p>
-                </div>
-                <form method="post">
-                    <input type="hidden" name="action" value="saque">
-                    <div class="form-group">
-                        <label>Quantidade de requisições:</label>
-                        <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Delay entre requisições (ms):</label>
-                        <input type="number" name="delay" min="0" max="5000" value="100">
-                    </div>
-                    <div class="form-group">
-                        <label>CPF Usuario:</label>
-                        <input type="text" name="cpf">
-                    </div>
 
-                    <!-- Valor do saque + checkbox ao lado -->
-                    <div class="form-group form-row">
-                        <label>Valor do saque:</label>
-                        <div class="input-checkbox-row">
-                            <input type="number" id="saque-input" class="placeholder_input_with_checkbox" name="saque">
-                            <label class="checkbox-inline">
-                                <input type="checkbox" id="valor-aleatorio-saque" name="valor_aleatorio" {% if valor_aleatorio %}checked{% endif %}>
-                                Valor Aleatório
+            <div id="frauds" class="main-tab-content">
+                <div class="tabs">
+                    <button class="tab active" onclick="showTab(event, 'multi_login')">MULTI LOGIN</button>
+                </div>
+
+                <!-- LOGIN TAB -->
+                <div id="multi_login" class="tab-content active">
+                    <form method="post">
+                        <input type="hidden" name="action" value="login">
+                        <div class="form-group">
+                            <label>Quantidade de requisições:</label>
+                            <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Delay entre requisições (ms):</label>
+                            <input type="number" name="delay" min="0" max="5000" value="1000">
+                        </div>
+                        <div class="form-group">
+                            <label>CPF Usuario:</label>
+                            <input type="text" name="cpf" >
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" name="ip_variavel" {% if ip_variado %}checked{% endif %}>
+                                IP VARIADO
                             </label>
                         </div>
-                    </div>
-
-                    <button type="submit">🚀 Iniciar Teste de Saque</button>
-                </form>
-            </div>
-
-            <!-- START GAME TAB -->
-            <div id="startgame" class="tab-content">
-                <div class="action-description">
-                    <h3>Start Game Action</h3>
-                    <p>Testa inicialização de jogos para detectar comportamento anômalo de gameplay.</p>
+                        <button type="submit">🚀 Iniciar Teste de Login</button>
+                    </form>
                 </div>
-                <form method="post">
-                    <input type="hidden" name="action" value="startgame">
-                    <div class="form-group">
-                        <label>Quantidade de requisições:</label>
-                        <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Delay entre requisições (ms):</label>
-                        <input type="number" name="delay" min="0" max="5000" value="100">
-                    </div>
-                    <div class="form-group">
-                        <label>CPF Usuario:</label>
-                        <input type="text" name="cpf">
-                    </div>
-                    <div class="form-group">
-                        <label>Id do jogo:</label>
-                        <input type="number" id="id-game-input" name="game_id">
-                    </div>
-                    <button type="submit">🚀 Iniciar Teste de Start Game</button>
-                </form>
+
+                
+  
             </div>
-
-            <!-- GAME TRANSACTION TAB -->
-            <div id="game_transaction" class="tab-content">
-                <div class="action-description">
-                    <h3>Game Transaction Action</h3>
-                    <p>Testa transações dentro do jogo para detectar comportamento fraudulento.</p>
-                </div>
-                <form method="post">
-                    <input type="hidden" name="action" value="game_transaction">
-
-                    <div class="form-group">
-                        <label>Quantidade de requisições:</label>
-                        <input type="number" name="quantidade" min="1" max="1000" required value="{{ quantidade }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Delay entre requisições (ms):</label>
-                        <input type="number" name="delay" min="0" max="5000" value="100">
-                    </div>
-
-                    <div class="form-group">
-                        <label>CPF Usuario:</label>
-                        <input type="text" name="cpf">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Tipo de transação:</label>
-                        <select name="transaction_type" required>
-                            <option value="debit">Débito</option>
-                            <option value="credit">Crédito</option>
-                        </select>
-                    </div>
-
-                    <!-- Valor da transação + checkbox ao lado -->
-                    <div class="form-group form-row">
-                        <label>Valor da transação:</label>
-                        <div class="input-checkbox-row">
-                            <input type="number" class="placeholder_input_with_checkbox" id="game-transaction-input" name="transaction_value">
-                            <label class="checkbox-inline">
-                                <input type="checkbox" id="valor-aleatorio-game-transaction" name="valor_aleatorio_game_transaction" {% if valor_aleatorio_game_transaction %}checked{% endif %}>
-                                Valor Aleatório
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- ID do jogo + checkbox ao lado -->
-                    <div class="form-group form-row">
-                        <label>ID do jogo:</label>
-                        <div class="input-checkbox-row">
-                            <input type="number" id="game-id-input" class="placeholder_input_with_checkbox" name="game_id">
-                            <label class="checkbox-inline">
-                                <input type="checkbox" id="jogo-aleatorio-game-transaction" name="jogo_aleatorio_game_transaction" {% if jogo_aleatorio_game_transaction %}checked{% endif %}>
-                                Jogo Aleatório
-                            </label>
-                        </div>
-                    </div>
-
-                    <button type="submit">🚀 Iniciar Teste de Game Transaction</button>
-                </form>
             </div>
-        </div>
+            
+
+
 
         <!-- Sidebar de Alerts - lado direito -->
         <aside class="alerts-sidebar">
@@ -271,4 +317,4 @@
 
     <script src="static/script.js"></script>
 </body>
-</html>
+</html

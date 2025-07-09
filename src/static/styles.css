@@ -111,6 +111,7 @@ h1 {
     overflow: hidden;
 }
 
+
 .tab:hover {
     background: var(--surface-2);
     color: var(--primary);
@@ -131,6 +132,77 @@ h1 {
 .tab-content.active {
     display: block;
 }
+
+.main-tab-content {
+    display: none;
+    animation: fadeInUp 0.4s ease forwards;
+    padding: 1.5rem 0 0 0;
+}
+
+.main-tab-content.active {
+    display: block;
+}
+
+.main-tabs {
+    display: flex;
+    border-bottom: 1.5px solid var(--border);
+    margin-bottom: 1.5rem;
+    gap: 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    max-width: 100%;
+    box-sizing: border-box;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.main-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.main-tab {
+    flex: 0 0 auto;
+    min-width: 120px;
+    max-width: 200px;
+    padding: 0.75rem 1.25rem;
+    background: none;
+    border: none;
+    border-radius: 8px 8px 0 0;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+
+.main-tab:hover {
+    background: var(--surface-2);
+    color: var(--primary);
+}
+
+.main-tab.active {
+    background: var(--primary);
+    color: #fff;
+    font-weight: 600;
+}
+
+.main-tab-content {
+    display: none;
+    animation: fadeInUp 0.4s ease forwards;
+    padding: 1.5rem 0 0 0;
+}
+
+.main-tab-content.active {
+    display: block;
+}
+
+
 
 @keyframes fadeInUp {
     from {
